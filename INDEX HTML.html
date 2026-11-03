@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Hẹn Ngay! – Từ một cái tên đến một lời hẹn</title>
+<style>
+:root{--red:#E81B2E;--red2:#B5121F;--dark:#373A36;--cream:#FBF1E8;--pink:#FDECEE;--beige:#D9B38F;--green:#1E8E3E;--grey:#8A8F94}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Verdana,Geneva,sans-serif;background:#F4F1EE;color:var(--dark)}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:#fff;padding-bottom:30px}
+header{position:sticky;top:0;z-index:5;background:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:3px solid var(--red)}
+.logo{background:var(--red);color:#fff;font-weight:bold;border-radius:10px;padding:6px 9px;font-size:14px}
+.dots{display:flex;gap:6px;flex:1;justify-content:center}
+.dot{width:24px;height:24px;border-radius:50%;background:#E6E2DE;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.dot.done{background:var(--green)}.dot.now{background:var(--red)}
+.score{background:var(--cream);border-radius:20px;padding:6px 12px;font-weight:bold;font-size:14px;color:var(--red)}
+.screen{display:none;padding:18px 16px;animation:fade .35s}.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+.hero{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border-radius:22px;padding:24px 20px;position:relative;overflow:hidden}
+.hero .big{position:absolute;right:-10px;top:-20px;font-size:120px;font-weight:bold;opacity:.12}
+.kicker{font-size:12px;letter-spacing:1.5px;font-weight:bold;opacity:.9}
+h1{font-size:28px;margin:8px 0 6px;line-height:1.2}
+h2{font-size:20px;color:var(--red);margin:4px 0 6px}
+.sub{font-size:13px;color:var(--grey);margin-bottom:12px}
+.tag{display:inline-block;background:var(--pink);color:var(--red);font-size:11px;font-weight:bold;border-radius:12px;padding:3px 10px;margin-bottom:6px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:12px}
+.btn.red{background:var(--red);color:#fff;box-shadow:0 4px 0 var(--red2)}
+.btn.red:active{transform:translateY(3px);box-shadow:none}
+.btn.ghost{background:var(--cream);color:var(--dark)}
+.btn:disabled{opacity:.4}
+input[type=text]{width:100%;padding:14px;border:2px solid #E6E2DE;border-radius:12px;font-size:16px;font-family:inherit;margin-top:14px}
+.menu .item{display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:14px;padding:12px;margin-top:10px;cursor:pointer}
+.menu .num{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none}
+.menu .item.done .num{background:var(--green)}
+.menu small{color:var(--grey);display:block;font-size:11px}
+.card{background:var(--cream);border-radius:16px;padding:14px;margin:12px 0;font-size:14px;line-height:1.5}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.chip{border:2px solid #E6E2DE;background:#fff;border-radius:12px;padding:12px 8px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit;color:var(--dark)}
+.chip.ok{background:var(--green);border-color:var(--green);color:#fff}
+.chip.no{background:#F7D4D7;border-color:var(--red);color:var(--red)}
+.chip.sel{border-color:var(--red);background:var(--pink)}
+.fb{margin-top:12px;border-radius:12px;padding:12px;font-size:13px;line-height:1.5;display:none}
+.fb.show{display:block}.fb.good{background:#E3F4E8}.fb.bad{background:var(--pink)}
+.progress{height:8px;background:#EEE;border-radius:5px;overflow:hidden;margin:6px 0 12px}
+.progress i{display:block;height:100%;background:var(--red);transition:width .3s}
+.funnel div{margin:5px auto;color:#fff;font-weight:bold;text-align:center;border-radius:8px;padding:8px 0;transform:scaleX(0);transition:transform .5s;font-size:13px}
+.funnel div.show{transform:scaleX(1)}
+input[type=range]{width:100%;accent-color:var(--red);margin-top:10px}
+.guess{font-size:44px;font-weight:bold;color:var(--red);text-align:center}
+.phone{background:#1F1F24;border-radius:30px;padding:14px;color:#fff}
+.phone .top{display:flex;align-items:center;gap:10px;padding:6px 6px 12px;border-bottom:1px solid #333}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--beige);display:flex;align-items:center;justify-content:center;font-size:20px}
+.bubbles{min-height:150px;padding:10px 4px}
+.bub{max-width:85%;padding:10px 13px;border-radius:16px;margin:7px 0;font-size:14px;line-height:1.45;animation:fade .3s}
+.bub.kh{background:#3A3A42}.bub.tvv{background:var(--red);margin-left:auto}
+.meter{display:flex;align-items:center;gap:8px;font-size:12px;margin:8px 4px}
+.meter .bar{flex:1;height:10px;background:#3A3A42;border-radius:6px;overflow:hidden}
+.meter .bar i{display:block;height:100%;background:linear-gradient(90deg,#F4B400,var(--green));transition:width .5s}
+.opts .opt{background:#fff;border:2px solid #E6E2DE;border-radius:12px;padding:12px;margin-top:8px;font-size:13px;line-height:1.45;cursor:pointer}
+.swipe{position:relative;height:190px;margin-top:10px}
+.scard{position:absolute;inset:0;background:#fff;border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.12);padding:20px;display:flex;flex-direction:column;justify-content:center;text-align:center;font-size:16px;line-height:1.5;transition:transform .35s,opacity .35s}
+.scard .ic{font-size:36px}
+.scard.l{transform:translateX(-120%) rotate(-15deg);opacity:0}.scard.r{transform:translateX(120%) rotate(15deg);opacity:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timer{font-weight:bold;color:var(--red);text-align:center;font-size:14px;margin-top:8px}
+.path{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.pstep{display:flex;align-items:center;gap:10px;border:2px solid #E6E2DE;border-radius:14px;padding:10px 12px;background:#fff;opacity:.55;transition:all .3s}
+.pstep .n{width:30px;height:30px;border-radius:50%;background:#CFC8C1;color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;flex:none}
+.pstep b{font-size:14px}.pstep small{display:block;color:var(--grey);font-size:11px}
+.pstep.today{opacity:1;border-color:var(--red);background:var(--pink)}.pstep.today .n{background:var(--red)}
+.pstep.on{opacity:1}
+.commit{background:linear-gradient(160deg,var(--red),var(--red2));border-radius:22px;padding:20px;color:#fff;position:relative;overflow:hidden}
+.commit .inner{background:#fff;color:var(--dark);border-radius:18px;padding:16px;margin-top:14px}
+.pill{background:var(--red);color:#fff;border-radius:20px;padding:8px 14px;font-weight:bold;font-size:13px;display:inline-block}
+.step{display:flex;align-items:center;justify-content:space-between;border:2px dashed #F2B6BC;border-radius:14px;padding:10px 12px;margin-top:10px}
+.step b{font-size:28px;color:var(--red);min-width:52px;text-align:center}
+.step button{width:36px;height:36px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:20px;font-weight:bold}
+.step span{font-size:13px;flex:1;margin:0 8px}
+.total{color:var(--red);font-weight:bold;margin-top:10px}
+.stamp{position:absolute;top:70px;right:-6px;border:4px solid var(--red);color:var(--red);background:#fff;font-weight:bold;font-size:22px;padding:8px 14px;border-radius:10px;transform:rotate(-12deg) scale(3);opacity:0;transition:all .45s cubic-bezier(.2,1.6,.4,1)}
+.stamp.on{transform:rotate(-12deg) scale(1);opacity:1}
+.medal{font-size:70px;text-align:center;animation:pop .6s}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.pts{font-size:64px;font-weight:bold;color:var(--red);text-align:center;line-height:1}
+.confetti{position:fixed;top:-10px;width:9px;height:14px;z-index:99;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 18px;border-radius:20px;font-weight:bold;z-index:50;opacity:0;transition:opacity .3s}
+.toast.on{opacity:1}
+.cd{position:fixed;inset:0;z-index:200;background:radial-gradient(circle,#E81B2E 0%,#8E0E19 100%);display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff}
+.cd.on{display:flex}
+.cd .n{font-size:160px;font-weight:bold;line-height:1;text-shadow:0 8px 30px rgba(0,0,0,.35)}
+.cd .n.go{font-size:64px}
+.cd .n.anim{animation:zoom .9s ease-out}
+@keyframes zoom{0%{transform:scale(2.6);opacity:0}35%{transform:scale(1);opacity:1}80%{opacity:1}100%{transform:scale(.6);opacity:0}}
+.cd .ring{position:absolute;width:240px;height:240px;border-radius:50%;border:6px solid rgba(255,255,255,.35);animation:ring .9s ease-out infinite}
+@keyframes ring{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.cd .lbl{position:absolute;bottom:18%;font-size:15px;letter-spacing:2px;opacity:.9}
+.adjrow{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+.adjrow button{border:0;border-radius:50%;background:var(--red);color:#fff;font-weight:bold;font-family:inherit;cursor:pointer;box-shadow:0 3px 0 var(--red2)}
+.adjrow button:active{transform:translateY(2px);box-shadow:none}
+.adjrow .s{width:44px;height:44px;font-size:14px;background:var(--cream);color:var(--red);box-shadow:0 3px 0 var(--beige)}
+.adjrow .b{width:58px;height:58px;font-size:28px}
+.guess{transition:transform .15s}.guess.bump{transform:scale(1.18)}
+.step b.bump{transform:scale(1.25)}.step b{transition:transform .15s}
+.note{font-size:11px;color:var(--grey);margin-top:12px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo">PRU</div>
+  <div class="dots" id="dots"></div>
+  <div class="score">⭐ <span id="score">0</span></div>
+</header>
+
+<section class="screen on" id="home">
+  <div class="hero"><div class="big">HẸN</div>
+    <div class="kicker">PRU KHỞI ĐẦU SỰ NGHIỆP</div>
+    <h1>Hẹn Ngay!</h1>
+    <div style="font-size:14px;opacity:.95">4 thử thách nhanh · 1 thẻ cam kết</div>
+  </div>
+  <input type="text" id="nick" maxlength="20" placeholder="Biệt danh của bạn">
+  <button class="btn red" onclick="startJourney()">Bắt đầu 🚀</button>
+  <p class="note">Không lưu, không gửi dữ liệu. Không nhập thông tin khách hàng.</p>
+</section>
+
+<section class="screen menu" id="menu">
+  <h2>Hành trình của <span id="nickShow"></span></h2>
+  <div class="sub">Chơi theo hiệu lệnh của Giảng viên.</div>
+  <div id="menuList"></div>
+  <button class="btn red" onclick="go('commit')">🏁 Thẻ cam kết</button>
+</section>
+
+<!-- 1. PHỄU -->
+<section class="screen" id="m1">
+  <span class="tag">1 · TÌM ĐÚNG KHÁCH HÀNG</span>
+  <h2>Đoán phễu</h2>
+  <div class="sub">Cần bao nhiêu cuộc xin hẹn để có 1 hợp đồng?</div>
+  <div id="m1a">
+    <div class="guess" id="m1g">10</div>
+    <div class="adjrow"><button class="s" onclick="g1(-5)">−5</button><button class="b" onclick="g1(-1)">−</button><button class="b" onclick="g1(1)">+</button><button class="s" onclick="g1(5)">+5</button></div>
+    <div class="sub" style="text-align:center;margin-top:8px">Bấm − / + (giữ để chạy nhanh)</div>
+    <button class="btn red" onclick="m1Reveal()">Chốt 🎯</button>
+  </div>
+  <div id="m1b" style="display:none">
+    <div class="funnel" id="funnel"></div>
+    <div class="fb show good" id="m1fb"></div>
+    <button class="btn red" id="m1n" style="display:none" onclick="finish('m1')">Tiếp ✓</button>
+  </div>
+</section>
+
+<!-- 2. ANH A NGHE MÁY -->
+<section class="screen" id="m2">
+  <span class="tag">2 · GỌI ĐIỆN ĐẶT HẸN</span>
+  <h2>Anh A đang nghe máy…</h2>
+  <div class="sub">Chọn câu trả lời để anh A đồng ý gặp.</div>
+  <div class="phone">
+    <div class="top"><div class="avatar">👨</div><div><b>Anh A</b><br><small style="color:#aaa">Người quen · 35 tuổi</small></div></div>
+    <div class="meter">Sẵn lòng gặp <div class="bar"><i id="mood" style="width:30%"></i></div></div>
+    <div class="bubbles" id="bubs"></div>
+  </div>
+  <div class="opts" id="opts"></div>
+  <div class="fb" id="m2fb"></div>
+  <button class="btn red" id="m2n" style="display:none" onclick="finish('m2')">Tiếp ✓</button>
+</section>
+
+<!-- 3. GỌI HAY CHỜ -->
+<section class="screen" id="m3">
+  <span class="tag">3 · GIỜ VÀNG</span>
+  <h2>Gọi hay chờ?</h2>
+  <div class="sub">Mỗi thẻ 8 giây – trả lời càng nhanh càng nhiều điểm!</div>
+  <div class="progress"><i id="m3p"></i></div>
+  <div class="swipe" id="swipe"></div>
+  <div class="timer" id="m3t"></div>
+  <div class="two" id="m3btn">
+    <button class="btn ghost" onclick="m3Ans(false)">⏳ Chờ</button>
+    <button class="btn red" onclick="m3Ans(true)">📞 Gọi</button>
+  </div>
+  <div class="fb" id="m3fb"></div>
+  <button class="btn red" id="m3n" style="display:none" onclick="finish('m3')">Tiếp ✓</button>
+</section>
+
+<!-- 4. CÂU MỞ ĐẦU -->
+<section class="screen" id="m4">
+  <span class="tag">4 · CÂU CHUYỆN</span>
+  <h2>Câu mở đầu "mở lòng"</h2>
+  <div class="sub">Gặp anh A rồi! Chọn <b>3 câu</b> giúp anh A muốn kể chuyện.</div>
+  <div id="m4list"></div>
+  <button class="btn red" id="m4check" disabled onclick="m4Check()">Chốt 3 câu</button>
+  <div class="fb" id="m4fb"></div>
+  <div id="m4path" style="display:none">
+    <div class="card" style="margin-bottom:0"><b>Hôm nay bạn đã bắt đầu từ CÂU CHUYỆN</b> – điểm khởi đầu của cấu trúc tư duy trong tư vấn:</div>
+    <div class="path" id="path"></div>
+  </div>
+  <button class="btn red" id="m4n" style="display:none" onclick="finish('m4')">Tiếp ✓</button>
+</section>
+
+<!-- CAM KẾT -->
+<section class="screen" id="commit">
+  <div class="commit">
+    <div class="kicker">PRU KHỞI ĐẦU SỰ NGHIỆP</div>
+    <h1 style="font-size:24px">Mọi hợp đồng bắt đầu từ một lời hẹn</h1>
+    <div class="stamp" id="stamp">✓ ĐÃ CAM KẾT</div>
+    <div class="inner">
+      <div class="pill">CAM KẾT TUẦN NÀY CỦA <span id="nick2"></span></div>
+      <div class="step"><button data-hold="calls,-1">−</button><span>cuộc xin hẹn mỗi ngày</span><b id="calls">5</b><button data-hold="calls,1">+</button></div>
+      <div class="step"><button data-hold="days,-1">−</button><span>ngày/tuần trong Giờ vàng</span><b id="days">6</b><button data-hold="days,1">+</button></div>
+      <div class="total" id="tot"></div>
+      <button class="btn red" id="cbtn" onclick="doCommit()">Tôi cam kết ✍️</button>
+    </div>
+  </div>
+  <div id="award" style="display:none">
+    <div class="medal" id="medal">🏅</div>
+    <div style="text-align:center;font-size:18px;font-weight:bold">Danh hiệu <span style="color:var(--red)" id="title"></span></div>
+    <div class="pts" id="pts">0</div>
+    <div style="text-align:center;color:var(--grey);font-size:13px">điểm</div>
+    <div class="card" style="text-align:center">📸 Chụp màn hình, gửi MoA/Leader.</div>
+  </div>
+  <button class="btn ghost" onclick="go('menu')">← Về hành trình</button>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+<div class="cd" id="cd"><div class="ring"></div><div class="n" id="cdn">3</div><div class="lbl" id="cdl">SẴN SÀNG…</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+let score=0,done={},nick='Bạn';
+const MISSIONS=[['m1','Đoán phễu','Tìm đúng khách hàng'],['m2','Anh A đang nghe máy…','Gọi điện đặt hẹn'],['m3','Gọi hay chờ?','Giờ vàng'],['m4','Câu mở đầu "mở lòng"','Câu chuyện']];
+function add(p){score+=p;$('score').textContent=score;if(p>0)toast('+'+p)}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),900)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);dots(id);if(id==='menu')menu();if(id==='commit')initCommit();if(INIT[id]&&!done[id])INIT[id]()}
+function dots(cur){$('dots').innerHTML=MISSIONS.map((m,i)=>`<div class="dot ${done[m[0]]?'done':cur===m[0]?'now':''}">${i+1}</div>`).join('')}
+function goMenu(){nick=$('nick').value.trim()||'Bạn';$('nickShow').textContent=nick;go('menu')}
+function menu(){$('menuList').innerHTML=MISSIONS.map((m,i)=>`<div class="item ${done[m[0]]?'done':''}" onclick="go('${m[0]}')"><div class="num">${done[m[0]]?'✓':i+1}</div><div><b>${m[1]}</b><small>${m[2]}</small></div></div>`).join('')}
+function finish(id){done[id]=true;confetti(35);go('menu')}
+function confetti(n){for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=['#E81B2E','#D9B38F','#F4B400','#1E8E3E','#fff'][i%5];c.style.animationDuration=(1.5+Math.random()*1.5)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3200)}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+const INIT={m1:()=>{},m2:m2Init,m3:m3Init,m4:m4Init};
+
+/* 1. Phễu */
+function m1Reveal(){const g=guess;$('m1a').style.display='none';$('m1b').style.display='block';
+ const F=[[30,'cuộc xin hẹn','#C9A27E'],[15,'cuộc hẹn thành công','#D9B38F'],[10,'buổi gặp','#E9967A'],[5,'buổi thấu hiểu nhu cầu','#EF6B74'],[3,'lần trình bày giải pháp','#E8414F'],[1,'HỢP ĐỒNG 🎉','#E81B2E']];
+ $('funnel').innerHTML=F.map((f,i)=>`<div style="width:${100-i*12}%;background:${f[2]}">${f[0]} ${f[1]}</div>`).join('');
+ [...$('funnel').children].forEach((d,i)=>setTimeout(()=>d.classList.add('show'),220*i));
+ const diff=Math.abs(g-30),p=diff<=3?50:diff<=10?30:10;
+ setTimeout(()=>{add(p);$('m1fb').innerHTML=`Bạn đoán <b>${g}</b> · Thực tế: <b>30 cuộc xin hẹn</b>.<br>1 hợp đồng/tuần ≈ <b>5 cuộc gọi mỗi ngày</b>.`;$('m1n').style.display='block'},1500)}
+
+/* 2. Anh A nghe máy */
+const M2=[
+ {kh:'Thôi em ơi, anh không muốn nói chuyện bảo hiểm đâu.',o:[
+  ['Dạ em hiểu. Em chỉ xin gặp anh 15–20 phút hỏi thăm, anh nghe tham khảo thôi, không cần quyết định gì ạ.',30,'Đồng cảm + làm rõ mục đích buổi gặp.'],
+  ['Anh ơi bảo hiểm quan trọng lắm, anh nghe em nói chút thôi mà!',-15,'Ép buộc khiến khách hàng phòng thủ hơn.']]},
+ {kh:'Mà anh có bảo hiểm rồi em.',o:[
+  ['Vậy anh mua thêm một hợp đồng nữa cho chắc nha anh.',-20,'Không tư vấn sản phẩm qua điện thoại – mục đích chỉ là có cuộc hẹn.'],
+  ['Em mừng vì anh đã lo cho gia đình. Mình gặp chút để cùng xem lại quyền lợi hiện có, đủ rồi thì anh yên tâm hơn.',30,'Ghi nhận khách hàng + nói rõ giá trị buổi gặp.']]},
+ {kh:'Ừm… nhưng giờ anh chưa cần lắm.',o:[
+  ['Dạ em hiểu, tham gia hay không là do anh quyết định. Sáng thứ Bảy hay sáng Chủ nhật thì tiện cho anh hơn ạ?',40,'Đồng cảm → làm rõ mục đích → 2 lựa chọn thời gian.'],
+  ['Khi nào anh cần thì anh gọi em nha.',-10,'Chưa đề nghị lịch hẹn cụ thể.']]}];
+let m2i=0,mood=30;
+function m2Init(){m2i=0;mood=30;$('bubs').innerHTML='';$('mood').style.width='30%';$('m2fb').className='fb';$('m2n').style.display='none';
+ bub('tvv','Anh ơi, cuối tuần mình gặp cà phê 15–20 phút nhé, em chia sẻ chút về công việc mới.');setTimeout(m2Show,500)}
+function bub(c,t){const d=document.createElement('div');d.className='bub '+c;d.textContent=t;$('bubs').appendChild(d)}
+function m2Show(){const r=M2[m2i];bub('kh',r.kh);$('opts').innerHTML=shuffle([0,1]).map(i=>`<div class="opt" onclick="m2Ans(${i})">${r.o[i][0]}</div>`).join('')}
+function m2Ans(i){const o=M2[m2i].o[i];$('opts').innerHTML='';bub('tvv',o[0]);mood=Math.max(5,Math.min(100,mood+o[1]));$('mood').style.width=mood+'%';
+ if(o[1]>0)add(o[1]);$('m2fb').className='fb show '+(o[1]>0?'good':'bad');$('m2fb').innerHTML=(o[1]>0?'✅ ':'💡 ')+o[2];
+ if(o[1]<=0){setTimeout(()=>{bub('kh','Ờ…');const k=M2[m2i].o.findIndex(x=>x[1]>0);$('opts').innerHTML=`<div class="opt" onclick="m2Ans(${k})">🔁 ${M2[m2i].o[k][0]}</div>`},800);return}
+ if(++m2i<M2.length)setTimeout(m2Show,900);else setTimeout(()=>{bub('kh','Ừ, sáng thứ Bảy đi em.');bub('tvv','Dạ, 9 giờ sáng thứ Bảy, em nhắn tin xác nhận lại ạ!');$('mood').style.width='100%';confetti(25);$('m2fb').innerHTML='📅 <b>Đã có lịch hẹn!</b> Lời từ chối là từ chối cuộc hẹn lúc đó, không phải từ chối bạn.';$('m2n').style.display='block'},900)}
+
+/* 3. Gọi hay chờ */
+const M3=[['🏢','Chị B – nhân viên văn phòng<br><b>12h15</b> · nghỉ trưa',true,'Giờ nghỉ trưa dễ nghe máy.'],
+ ['🛍️','Anh C – bán hàng ở chợ<br><b>7h00</b> · giờ mở hàng',false,'Đông khách – gọi lúc vắng khách buổi chiều.'],
+ ['👩‍👧','Chị D – nội trợ<br><b>9h30</b> · con đã đi học',true,'Lúc chị D rảnh tay.'],
+ ['🍲','Anh E – nhân viên văn phòng<br><b>18h45</b> · giờ cơm',false,'Tránh giờ cơm – gọi khoảng 19h30.'],
+ ['💼','Anh F – chủ doanh nghiệp<br><b>7h45</b> · trước giờ họp',true,'Đầu ngày, trước giờ cao điểm.'],
+ ['🌙','Chị G – kế toán<br><b>22h00</b>',false,'Quá muộn – tránh gọi sau 21h00.']];
+let m3i=0,m3o,m3tm,m3left;
+function m3Init(){m3o=shuffle(M3);m3i=0;$('m3btn').style.display='grid';$('m3fb').className='fb';$('m3n').style.display='none';m3Show()}
+function m3Show(){const q=m3o[m3i];$('m3p').style.width=(m3i/6*100)+'%';$('swipe').innerHTML=`<div class="scard" id="sc"><div class="ic">${q[0]}</div><div>${q[1]}</div></div>`;
+ m3left=8;$('m3t').textContent='⏱ '+m3left;clearInterval(m3tm);m3tm=setInterval(()=>{m3left--;$('m3t').textContent='⏱ '+m3left;if(m3left<=0)m3Ans(null)},1000)}
+function m3Ans(a){clearInterval(m3tm);if(!$('sc')||$('sc').classList.contains('l')||$('sc').classList.contains('r'))return;const q=m3o[m3i],ok=a===q[2];if(ok)add(10+m3left);
+ $('sc').classList.add(a?'r':'l');$('m3fb').className='fb show '+(ok?'good':'bad');$('m3fb').innerHTML=(ok?'✅ ':a===null?'⏰ Hết giờ! ':'💡 ')+q[3];
+ if(++m3i<6)setTimeout(m3Show,1000);else{$('m3p').style.width='100%';$('m3btn').style.display='none';$('m3t').textContent='';$('m3fb').innerHTML+='<br><b>Chắc nhất:</b> hỏi khách hàng giờ nào tiện.';$('m3n').style.display='block'}}
+
+/* 4. Câu mở đầu + nhắc 5 khái niệm */
+const M4=[['Dạo này công việc của anh thế nào? Anh có đi công tác nhiều không?',true],['Anh đã có bảo hiểm chưa ạ?',false],
+ ['Anh còn nhớ giai đoạn nào thu nhập của mình bị ảnh hưởng nhiều nhất không?',true],['Em giới thiệu anh sản phẩm mới bên em nhé.',false],
+ ['Bé nhà anh năm nay học lớp mấy rồi? Anh có dự định gì cho việc học của bé không?',true],['Anh có biết rủi ro đến bất cứ lúc nào không?',false]];
+const FIVE=[['Câu chuyện','Khơi mở sự quan tâm và đối thoại'],['Khoảng trống','Điều đang có và điều cần/mong muốn có'],['Con số','Lượng hóa khoảng trống'],['Giải pháp','Phương án bảo vệ phù hợp'],['Hành động','Cam kết thực tế']];
+let m4o,m4s=[];
+function m4Init(){m4o=shuffle(M4);m4s=[];$('m4fb').className='fb';$('m4n').style.display='none';$('m4path').style.display='none';$('m4check').style.display='block';m4Draw()}
+function m4Draw(){$('m4list').innerHTML=m4o.map((q,i)=>`<button class="chip ${m4s.includes(i)?'sel':''}" style="width:100%;text-align:left;margin-top:8px;font-weight:normal;line-height:1.45" onclick="m4Tog(${i})">${m4s.includes(i)?'☑':'☐'} ${q[0]}</button>`).join('');$('m4check').disabled=m4s.length!==3}
+function m4Tog(i){if($('m4check').style.display==='none')return;m4s=m4s.includes(i)?m4s.filter(x=>x!==i):m4s.length<3?[...m4s,i]:m4s;m4Draw()}
+function m4Check(){let ok=0;const bs=$('m4list').children;m4o.forEach((q,i)=>{if(q[1])bs[i].classList.add('ok');else if(m4s.includes(i))bs[i].classList.add('no');if(q[1]&&m4s.includes(i))ok++});
+ add(ok*20);$('m4check').style.display='none';$('m4fb').className='fb show '+(ok===3?'good':'bad');
+ $('m4fb').innerHTML=`Đúng <b>${ok}/3</b>. Câu mở đầu tốt: ngắn, dễ trả lời, gắn với cuộc sống của khách hàng – rồi <b>dừng lại và lắng nghe</b>.`;
+ $('path').innerHTML=FIVE.map((f,i)=>`<div class="pstep ${i===0?'today':''}" id="ps${i}"><div class="n">${i+1}</div><div><b>${f[0].toUpperCase()}</b>${i===0?' <span style="color:var(--red);font-size:11px;font-weight:bold">· HÔM NAY</span>':''}<small>${f[1]}</small></div></div>`).join('');
+ setTimeout(()=>{$('m4path').style.display='block';FIVE.forEach((_,i)=>setTimeout(()=>$('ps'+i).classList.add('on'),350*i));setTimeout(()=>$('m4n').style.display='block',1900)},700)}
+
+/* Cam kết */
+const cm={calls:5,days:6},lim={calls:[1,30],days:[1,7]};let committed=false;
+function initCommit(){$('nick2').textContent=nick.toUpperCase();drawC()}
+function adj(k,d){if(committed)return;const v=Math.max(lim[k][0],Math.min(lim[k][1],cm[k]+d));if(v===cm[k])return;cm[k]=v;drawC();bump($(k))}
+function drawC(){for(const k in cm)$(k).textContent=cm[k];$('tot').textContent=`= ${cm.calls*cm.days} cuộc xin hẹn/tuần`}
+function doCommit(){if(committed)return;committed=true;$('stamp').classList.add('on');$('cbtn').textContent='✓ Đã cam kết';$('cbtn').disabled=true;add(100);confetti(80);
+ const t=score>=380?['PRUElite Vàng','🥇']:score>=280?['PRUElite Bạc','🥈']:['PRUElite Đồng','🥉'];
+ setTimeout(()=>{$('award').style.display='block';$('title').textContent=t[0];$('medal').textContent=t[1];
+  let c=0;const iv=setInterval(()=>{c=Math.min(score,c+Math.ceil(score/40));$('pts').textContent=c;if(c>=score)clearInterval(iv)},30)},700)}
+
+/* Countdown 3-2-1 */
+function beep(f,d){try{const a=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.25,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+d)}catch(e){}}
+function startJourney(){nick=$('nick').value.trim()||'Bạn';$('nickShow').textContent=nick;
+ const cd=$('cd'),n=$('cdn'),l=$('cdl');cd.classList.add('on');const seq=['3','2','1','HẸN NGAY!'];let i=0;
+ const tick=()=>{if(i>=seq.length){cd.classList.remove('on');confetti(60);go('menu');return}
+  n.textContent=seq[i];n.className='n'+(i===3?' go':'');void n.offsetWidth;n.classList.add('anim');
+  l.textContent=i<3?'SẴN SÀNG…':nick.toUpperCase()+' ƠI, XUẤT PHÁT!';beep(i<3?660:990,i<3?.18:.45);
+  if(navigator.vibrate)navigator.vibrate(i<3?60:200);i++;setTimeout(tick,900)};tick()}
+
+/* Đoán phễu: +/- */
+let guess=10;
+function g1(d){guess=Math.max(1,Math.min(100,guess+d));$('m1g').textContent=guess;bump($('m1g'))}
+function bump(e){e.classList.add('bump');setTimeout(()=>e.classList.remove('bump'),150)}
+
+/* Giữ nút để tăng/giảm nhanh */
+function holdable(btn,fn){let t,iv;const start=e=>{e.preventDefault();fn();t=setTimeout(()=>{iv=setInterval(fn,90)},400)};
+ const stop=()=>{clearTimeout(t);clearInterval(iv)};
+ btn.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>btn.addEventListener(ev,stop))}
+document.querySelectorAll('.adjrow .b').forEach(b=>{const d=b.textContent==='+'?1:-1;b.removeAttribute('onclick');holdable(b,()=>g1(d))});
+document.querySelectorAll('[data-hold]').forEach(b=>{const [k,d]=b.dataset.hold.split(',');holdable(b,()=>adj(k,+d))});
+dots('');
+</script>
+</body>
+</html>
